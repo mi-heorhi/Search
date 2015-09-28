@@ -15,12 +15,19 @@
 
 void saveResult(std::vector<int>& results)
 {
+	std::ofstream file;
 
+	file.open("output.txt", std::ofstream::app);
+	file << results.size() << "\n";
+	for (int result : results)
+	{
+		file << result << "\n";
+	}
+	file.close();
 }
 
 int main(int argc, char *argv[])
 {
-
 	IDictionary* dict;
 	auto dictionaryInstance = IDictionaryFactory::CONSTANTTIME_DICTIONARY;
 	dict = IDictionaryFactory::CreateFactory(dictionaryInstance);
@@ -50,21 +57,19 @@ int main(int argc, char *argv[])
 			auto start = std::chrono::system_clock::now();
 			
 			dict->indexFile(dictionaryPath);
-			std::ofstream file;
-			
-			file.open("output.txt", std::ofstream::app);
+
 			auto startSearch = std::chrono::system_clock::now();
-			file << searchWords.size() << "\n";
+			
 			for (auto word : searchWords)
 			{
-				file << dict->countMatches(word) << "\n";
+				results.push_back(dict->countMatches(word));
 			}
 			
 			auto seconds = std::chrono::duration_cast<std::chrono::duration<float>>(std::chrono::system_clock::now() - start);
 			std::cout << "Total search time is " << std::setprecision(4) << seconds.count() << " seconds." << std::endl;
 			seconds = std::chrono::duration_cast<std::chrono::duration<float>>(std::chrono::system_clock::now() - startSearch);
 			std::cout << "Total pure search time is " << std::setprecision(4) << seconds.count() << " seconds." << std::endl;
-			file.close();
+			saveResult(results);
 			delete dict;
 		}
 		else

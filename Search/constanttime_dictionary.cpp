@@ -26,7 +26,6 @@ void ConstantTimeDictionary::indexFile(std::string & path)
 	int line = 0;
 	ConcurentQueue<std::string> lines;
 	bool done = false;
-
 	if (file.is_open())
 	{
 		std::getline(file, str);

@@ -1,11 +1,8 @@
 #include "stdafx.h"
 #include "helper.h"
-#include "concurent_queue.h"
 
 #include <algorithm>
 #include <regex>
-#include <thread>
-#include <string>
 #include <fstream>
 
 
@@ -45,31 +42,16 @@ std::vector<std::string> Helper::split(const std::string& str, int delimiter(int
 std::vector<std::string> Helper::parseFile(const std::string & path)
 {
 	std::vector<std::string> result;
-	ConcurentQueue<std::string> lines;
-	std::string str;
-	bool done = false;
 	std::ifstream file;
 	file.open(path);
 	if (file.is_open())
 	{
+		std::string str;
 		std::getline(file, str);
-		std::thread producer([&]() {
-			while (std::getline(file, str))
-			{
-				lines.push(str);
-			}
-			done = true;
-		});
-		std::thread consumer([&]() {
-			while (!done) {
-				while (!lines.empty()) {
-					result.push_back(Helper::toUpper(lines.pop()));
-				}
-			}
-		});
-
-		producer.join();
-		consumer.join();
+		while (std::getline(file, str))
+		{
+			result.push_back(Helper::toUpper(str));
+		}
 	}
 	else
 	{
