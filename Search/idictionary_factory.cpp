@@ -15,4 +15,8 @@ IDictionary * IDictionaryFactory::CreateFactory(DICTIONARY_FACTORIES factory)
 	{
 		return new Dictionary();
 	}
+	else
+	{
+		return new ConstantTimeDictionary();
+	}
 }

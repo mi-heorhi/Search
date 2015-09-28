@@ -15,7 +15,7 @@ ConstantTimeDictionary::ConstantTimeDictionary()
 
 int ConstantTimeDictionary::countMatches(std::string & str)
 {
-	return _indexedDictionary.find(Helper::toUpper(str)) != _indexedDictionary.end() ? 1 : 0;
+	return _indexedDictionary.find(str) != _indexedDictionary.end() ? 1 : 0;
 }
 
 void ConstantTimeDictionary::indexFile(std::string & path)
